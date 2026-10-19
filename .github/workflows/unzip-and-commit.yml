@@ -1,0 +1,30 @@
+name: Unzip and Commit Files
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Unzip File
+        run: |
+          # আপনার জিপ ফাইলটি এক্সট্রাক্ট করে 'extracted-files' ফোল্ডারে রাখবে
+          unzip "website-cloning-inquiry (2).zip" -d extracted-files/
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Automated unzipping of zip file"
+          branch: main
+          file_pattern: "extracted-files/*"
